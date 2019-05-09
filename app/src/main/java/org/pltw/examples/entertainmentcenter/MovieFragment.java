@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 public class MovieFragment extends Fragment{
     private static final String TAG = MovieFragment.class.getSimpleName();
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter movieAdapter;
+    private EntertainmentAdapter movieAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
 
@@ -51,6 +51,9 @@ public class MovieFragment extends Fragment{
         recyclerView = view.findViewById(R.id.rv_movie_list);
         recyclerView.setHasFixedSize(true);
 
+
+
+
         layoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
@@ -71,18 +74,13 @@ public class MovieFragment extends Fragment{
                 }
 
                 movieAdapter = new EntertainmentAdapter(movies);
-                setUpRecyclerView();
-            }
-            public void setUpRecyclerView() {
                 recyclerView = view.findViewById(R.id.rv_movie_list);
                 recyclerView.setHasFixedSize(true);
                 layoutManager = new LinearLayoutManager(view.getContext());
                 recyclerView.setAdapter(movieAdapter);
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-                ItemTouchHelper itemTouchHelper = new
-                        ItemTouchHelper(new SwipeToDeleteCallback((EntertainmentAdapter) movieAdapter));
-                itemTouchHelper.attachToRecyclerView(recyclerView);
+                enableSwipeToDeleteAndUndo();
             }
 
             @Override
@@ -90,10 +88,30 @@ public class MovieFragment extends Fragment{
 
             }
 
+
+
+
+
+
         });
 
 
 
+
         return view;
+    }
+    public void onPause() {
+        super.onPause();
+        movieAdapter.deleteEntertainmentItem();
+    }
+    private void enableSwipeToDeleteAndUndo() {
+        SwipeToDeleteCallback swipeToDeleteCallback =
+                new SwipeToDeleteCallback(movieAdapter);
+
+
+
+        ItemTouchHelper itemTouchHelper = new
+                ItemTouchHelper(swipeToDeleteCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 }

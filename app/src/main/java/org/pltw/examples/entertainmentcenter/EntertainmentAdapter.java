@@ -21,7 +21,7 @@ public class EntertainmentAdapter extends RecyclerView.Adapter<EntertainmentAdap
     private static final String TAG = EntertainmentAdapter.class.getSimpleName();
     private Entertainment RecentlyRemovedItem;
     private int RecentlyRemovedItemPosition;
-    public View viewContainer;
+
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public EntertainmentAdapter(List<Entertainment> entertainment) {
@@ -140,6 +140,7 @@ public class EntertainmentAdapter extends RecyclerView.Adapter<EntertainmentAdap
         private int RecentlyDeletedItemPosition;
         private List<Entertainment> ListItems;
         private View view;
+        public View viewContainer;
         // each data item is just a string in this case
 
 

@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +24,9 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class BoardGameFragment extends Fragment {
-    private static final String TAG = MovieFragment.class.getSimpleName();
+    private static final String TAG = BoardGame.class.getSimpleName();
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter boardGameAdapter;
+    private EntertainmentAdapter boardGameAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
 
@@ -60,7 +61,13 @@ public class BoardGameFragment extends Fragment {
                 }
 
                 boardGameAdapter = new EntertainmentAdapter(boardGames);
+                recyclerView = view.findViewById(R.id.rv_board_game_list);
+                recyclerView.setHasFixedSize(true);
+                layoutManager = new LinearLayoutManager(view.getContext());
                 recyclerView.setAdapter(boardGameAdapter);
+                recyclerView.setLayoutManager(layoutManager);
+                recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+                enableSwipeToDeleteAndUndo();
             }
 
             @Override
@@ -70,5 +77,19 @@ public class BoardGameFragment extends Fragment {
         });
 
         return view;
+    }
+    public void onPause() {
+        super.onPause();
+        boardGameAdapter.deleteEntertainmentItem();
+    }
+    private void enableSwipeToDeleteAndUndo() {
+        SwipeToDeleteCallback swipeToDeleteCallback =
+                new SwipeToDeleteCallback(boardGameAdapter);
+
+
+
+        ItemTouchHelper itemTouchHelper = new
+                ItemTouchHelper(swipeToDeleteCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 }

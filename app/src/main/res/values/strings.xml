@@ -52,7 +52,7 @@
     <string name="description">Description</string>
     <string name="save_item">Save Item</string>
     <string name="saving">Saving...</string>
-    <string name="snack_bar_text">Undone</string>
+    <string name="snack_bar_text">Deleted item!</string>
     <string name="snack_bar_undo">Undone</string>
     <string-array name="entertainment_items">
         <item>Movie</item>

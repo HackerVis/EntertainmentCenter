@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,7 @@ import java.util.List;
 public class VideoGameFragment extends Fragment {
     private static final String TAG = VideoGameFragment.class.getSimpleName();
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter videoGameAdapter;
+    private EntertainmentAdapter videoGameAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
 
@@ -61,7 +62,13 @@ public class VideoGameFragment extends Fragment {
                 }
 
                 videoGameAdapter = new EntertainmentAdapter(videoGames);
+                recyclerView = view.findViewById(R.id.rv_video_game_list);
+                recyclerView.setHasFixedSize(true);
+                layoutManager = new LinearLayoutManager(view.getContext());
                 recyclerView.setAdapter(videoGameAdapter);
+                recyclerView.setLayoutManager(layoutManager);
+                recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+                enableSwipeToDeleteAndUndo();
             }
 
             @Override
@@ -71,5 +78,19 @@ public class VideoGameFragment extends Fragment {
         });
 
         return view;
+    }
+    public void onPause() {
+        super.onPause();
+        videoGameAdapter.deleteEntertainmentItem();
+    }
+    private void enableSwipeToDeleteAndUndo() {
+        SwipeToDeleteCallback swipeToDeleteCallback =
+                new SwipeToDeleteCallback(videoGameAdapter);
+
+
+
+        ItemTouchHelper itemTouchHelper = new
+                ItemTouchHelper(swipeToDeleteCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 }
